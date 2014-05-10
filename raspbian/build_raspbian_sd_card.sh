@@ -177,7 +177,9 @@ if  [[ ! -f /usr/share/keyrings/raspbian-archive-keyring.gpg ]]; then
     rm -rf ${td}
 fi
 
-debootstrap --foreign --arch armhf ${deb_release} ${rootfs} ${deb_local_mirror}
+debootstrap --foreign --arch armhf \
+    --keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg \
+    ${deb_release} ${rootfs} ${deb_local_mirror}
 cp /usr/bin/qemu-arm-static usr/bin/
 LANG=C chroot ${rootfs} /debootstrap/debootstrap --second-stage
 

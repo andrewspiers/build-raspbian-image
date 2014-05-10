@@ -59,6 +59,9 @@
 
 deb_mirror="http://archive.raspbian.org/raspbian"
 deb_local_mirror="http://localhost:3142/archive.raspbian.org/raspbian"
+key_server="pgp.mit.edu"
+#Mike Thompson (Raspberry Pi Debian armhf ARMv6+VFP) <mpthompson@gmail.com> :
+raspbian_release_key="0x9165938D90FDDD2E"
 
 if [ ${EUID} -ne 0 ]; then
   echo "this tool must be run as root"
@@ -167,6 +170,11 @@ mount -o bind /dev/pts ${rootfs}/dev/pts
 mount -o bind ${delivery_path} ${rootfs}/usr/src/delivery
 
 cd ${rootfs}
+
+#if apt doesn't have the raspbian release key, import it
+if  ! apt-key list | grep -q ${raspbian_release_key:(-8)} ; then
+    apt-key adv --keyserver ${key_server} --recv-keys ${raspbian_release_key}
+fi
 
 debootstrap --foreign --arch armhf ${deb_release} ${rootfs} ${deb_local_mirror}
 cp /usr/bin/qemu-arm-static usr/bin/

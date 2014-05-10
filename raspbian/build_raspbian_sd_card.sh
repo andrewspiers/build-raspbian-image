@@ -172,7 +172,7 @@ cd ${rootfs}
 #if raspbian archive keyring not installed, install it
 if  [[ ! -f /usr/share/keyrings/raspbian-archive-keyring.gpg ]]; then
     td=$(mktemp -d)
-    wget -P ${td} ${deb_mirror}/raspbian/pool/main/r/raspbian-archive-keyring/${raspbian_archive_keyring}
+    wget -P ${td} ${deb_mirror}/pool/main/r/raspbian-archive-keyring/${raspbian_archive_keyring}
     dpkg -i "${td}/${raspbian_archive_keyring}"
     rm -rf ${td}
 fi
